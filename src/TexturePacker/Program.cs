@@ -18,11 +18,11 @@ namespace TexturePacker
             const string inputDirectory = @"C:\Temp\TexturePacker-Input";
             const string outputDirectory = @"C:\Temp\TexturePacker-Output";
 
-            NormalizeUoFiddlerOutput(inputDirectory); // run only once
+            //NormalizeUoFiddlerOutput(inputDirectory); // run only once
             if (!File.Exists(bitmapInfoFileName))
             {
                 var fileNames = Directory.GetFiles(inputDirectory, "*.png", SearchOption.TopDirectoryOnly);
-                var fileCount = fileNames.Count();
+                var fileCount = fileNames.Length;
                 bitmapInfos = new BitmapInfo[fileCount];
                 for (var i = 0; i < fileCount; i++)
                 {
@@ -84,23 +84,26 @@ namespace TexturePacker
                     if (atlasPages.Count > 0)
                     {
                         currentGraphics?.Dispose();
-                        atlasPages[atlasPageIndex]
-                            .Save(Path.Combine(outputDirectory, $"{orientation}{atlasPageIndex}.png"));
+                        atlasPages[atlasPageIndex].Save(Path.Combine(outputDirectory, $"{orientation}{atlasPageIndex}.png"));
                         atlasPageIndex++;
                     }
 
+                    Bitmap atlasPage;
                     if (orientation == Orientation.Square)
                     {
-                        atlasPages.Add(new Bitmap(2048, 2048));
+                        atlasPage = new Bitmap(2048, 2048);
                     }
                     else if (orientation == Orientation.Landscape)
                     {
-                        atlasPages.Add(new Bitmap(4096, 2048));
+                        atlasPage = new Bitmap(4096, 2048);
                     }
                     else
                     {
-                        atlasPages.Add(new Bitmap(4096, 2048));
+                        atlasPage = new Bitmap(4096, 2048);
                     }
+
+                    atlasPages.Add(atlasPage);
+                    currentGraphics = Graphics.FromImage(atlasPage);
                 }
 
                 var spriteInfo = sortedInfos[i];
@@ -132,11 +135,7 @@ namespace TexturePacker
             atlasPages[atlasPageIndex].Save(Path.Combine(outputDirectory, $"{orientation}{atlasPageIndex}.png"));
             sw.Stop();
 
-            var packingEfficiency =
-                (atlasPageIndex * (atlasPages[atlasPageIndex].Width * atlasPages[atlasPageIndex].Height)) /
-                surfaceArea * 100.0f;
-            Debug.WriteLine(
-                $"Processing {sortedInfos.Length} {orientation} Sprites Done - {atlasPageIndex + 1} pages - took {sw.Elapsed.TotalSeconds}s - PackingEff: {packingEfficiency:F2}%");
+            Debug.WriteLine($"Processing {sortedInfos.Length} {orientation} Sprites Done - {atlasPageIndex + 1} pages - took {sw.Elapsed.TotalSeconds}s");
 
             foreach (var page in atlasPages)
             {
