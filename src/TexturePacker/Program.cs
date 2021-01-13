@@ -41,9 +41,14 @@ namespace TexturePacker
                 bitmapInfos = JsonConvert.DeserializeObject<BitmapInfo[]>(bitmapInfosJson);
             }
 
-            CreateAtlas(bitmapInfos, Orientation.Portrait, inputDirectory, outputDirectory);
-            CreateAtlas(bitmapInfos, Orientation.Landscape, inputDirectory, outputDirectory);
-            CreateAtlas(bitmapInfos, Orientation.Square, inputDirectory, outputDirectory);
+            var tileInfos = new List<Tile>();
+
+            CreateAtlas(bitmapInfos, Orientation.Portrait, inputDirectory, outputDirectory, ref tileInfos);
+            CreateAtlas(bitmapInfos, Orientation.Landscape, inputDirectory, outputDirectory, ref tileInfos);
+            CreateAtlas(bitmapInfos, Orientation.Square, inputDirectory, outputDirectory, ref tileInfos);
+
+            var tileInfosJson = JsonConvert.SerializeObject(tileInfos, Formatting.Indented);
+            File.WriteAllText(Path.Combine(outputDirectory, "atlasinfo.json"), tileInfosJson);
         }
 
         private static void NormalizeUoFiddlerOutput(string directory)
@@ -61,11 +66,11 @@ namespace TexturePacker
             }
         }
 
-        private static void CreateAtlas(
-            BitmapInfo[] bitmapInfos,
+        private static void CreateAtlas(BitmapInfo[] bitmapInfos,
             Orientation orientation,
             string inputDirectory,
-            string outputDirectory)
+            string outputDirectory,
+            ref List<Tile> tileInfos)
         {
             var sw = Stopwatch.StartNew();
             var sortedInfos = bitmapInfos.Where(bi => bi.Orientation == orientation)
@@ -116,7 +121,26 @@ namespace TexturePacker
 
                 currentGraphics.DrawImage(sprite, currentSpriteX, currentSpriteY);
 
-                surfaceArea += sprite.Width * sprite.Height;
+                var spriteAtlasX = currentSpriteX / (float)atlasPages[atlasPageIndex].Width;
+                var spriteAtlasY = currentSpriteY / (float)atlasPages[atlasPageIndex].Height;
+                var spriteAtlasW = sprite.Width / (float)atlasPages[atlasPageIndex].Width;
+                var spriteAtlasH = sprite.Height / (float)atlasPages[atlasPageIndex].Height;
+
+                var tile = new Tile
+                {
+                    Orientation = orientation,
+                    AtlasPageIndex = atlasPageIndex,
+                    Id = spriteInfo.TileId,
+                    U0 = spriteAtlasX + spriteAtlasW,
+                    V0 = spriteAtlasH,
+                    U1 = spriteAtlasX + spriteAtlasW,
+                    V1 = spriteAtlasY + spriteAtlasH,
+                    U2 = spriteAtlasX,
+                    V2 = spriteAtlasY + spriteAtlasH,
+                    U3 = spriteAtlasX,
+                    V3 = spriteAtlasY
+                };
+                tileInfos.Add(tile);
 
                 currentSpriteX += spriteInfo.Width;
                 if (currentSpriteX + spriteInfo.Width >= atlasPages[atlasPageIndex].Width)

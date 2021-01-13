@@ -3,7 +3,7 @@
     public class Tile
     {
         public int Id;
-        public int AtlasId;
+        public Orientation Orientation;
         public int AtlasPageIndex;
         public float U0;
         public float V0;
