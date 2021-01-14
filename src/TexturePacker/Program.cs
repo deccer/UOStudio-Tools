@@ -17,6 +17,7 @@ namespace TexturePacker
             const string bitmapInfoFileName = @"C:\Temp\bitmapinfos.json";
             const string inputDirectory = @"C:\Temp\TexturePacker-Input";
             const string outputDirectory = @"C:\Temp\TexturePacker-Output";
+            const string namePrefix = "Test";
 
             //NormalizeUoFiddlerOutput(inputDirectory); // run only once
             if (!File.Exists(bitmapInfoFileName))
@@ -42,13 +43,20 @@ namespace TexturePacker
             }
 
             var tileInfos = new List<Tile>();
+            var atlasInfos = new List<AtlasInfo>();
 
-            CreateAtlas(bitmapInfos, Orientation.Portrait, inputDirectory, outputDirectory, ref tileInfos);
-            CreateAtlas(bitmapInfos, Orientation.Landscape, inputDirectory, outputDirectory, ref tileInfos);
-            CreateAtlas(bitmapInfos, Orientation.Square, inputDirectory, outputDirectory, ref tileInfos);
+            CreateAtlas(bitmapInfos, Orientation.Portrait, inputDirectory, outputDirectory, namePrefix, ref tileInfos, ref atlasInfos);
+            CreateAtlas(bitmapInfos, Orientation.Landscape, inputDirectory, outputDirectory, namePrefix, ref tileInfos, ref atlasInfos);
+            CreateAtlas(bitmapInfos, Orientation.Square, inputDirectory, outputDirectory, namePrefix, ref tileInfos, ref atlasInfos);
 
-            var tileInfosJson = JsonConvert.SerializeObject(tileInfos, Formatting.Indented);
-            File.WriteAllText(Path.Combine(outputDirectory, "atlasinfo.json"), tileInfosJson);
+            var atlas = new Atlas
+            {
+                TileInfos = tileInfos.ToArray(),
+                AtlasInfos = atlasInfos.ToArray()
+            };
+
+            var atlasJson = JsonConvert.SerializeObject(atlas, Formatting.Indented);
+            File.WriteAllText(Path.Combine(outputDirectory, $"{namePrefix}-Atlas.json"), atlasJson);
         }
 
         private static void NormalizeUoFiddlerOutput(string directory)
@@ -70,18 +78,22 @@ namespace TexturePacker
             Orientation orientation,
             string inputDirectory,
             string outputDirectory,
-            ref List<Tile> tileInfos)
+            string namePrefix,
+            ref List<Tile> tileInfos,
+            ref List<AtlasInfo> atlasInfos)
         {
             var sw = Stopwatch.StartNew();
             var sortedInfos = bitmapInfos.Where(bi => bi.Orientation == orientation)
                 .OrderByDescending(bi => bi.Circumference).ToArray();
+
             var atlasPages = new List<Bitmap>(16);
             var currentSpriteY = 0;
             var currentSpriteX = 0;
             var atlasPageIndex = 0;
+            string fileName;
             Graphics currentGraphics = null;
-            Stack<int> firstColumn = new Stack<int>();
-            var surfaceArea = 0.0f;
+            var firstColumn = new Stack<int>();
+
             for (var i = 0; i < sortedInfos.Length; i++)
             {
                 if (currentSpriteX == 0 && currentSpriteY == 0)
@@ -89,7 +101,16 @@ namespace TexturePacker
                     if (atlasPages.Count > 0)
                     {
                         currentGraphics?.Dispose();
-                        atlasPages[atlasPageIndex].Save(Path.Combine(outputDirectory, $"{orientation}{atlasPageIndex}.png"));
+                        fileName = Path.Combine(outputDirectory, $"{namePrefix}-{orientation}-{atlasPageIndex}.png");
+                        atlasPages[atlasPageIndex].Save(fileName);
+
+                        atlasInfos.Add(new AtlasInfo
+                        {
+                            FileName = fileName,
+                            Orientation = orientation,
+                            PageNumber = atlasPageIndex
+                        });
+
                         atlasPageIndex++;
                     }
 
@@ -156,7 +177,14 @@ namespace TexturePacker
                 }
             }
 
-            atlasPages[atlasPageIndex].Save(Path.Combine(outputDirectory, $"{orientation}{atlasPageIndex}.png"));
+            fileName = Path.Combine(outputDirectory, $"{namePrefix}-{orientation}-{atlasPageIndex}.png");
+            atlasPages[atlasPageIndex].Save(fileName);
+            atlasInfos.Add(new AtlasInfo
+            {
+                FileName = fileName,
+                Orientation = orientation,
+                PageNumber = atlasPageIndex
+            });
             sw.Stop();
 
             Debug.WriteLine($"Processing {sortedInfos.Length} {orientation} Sprites Done - {atlasPageIndex + 1} pages - took {sw.Elapsed.TotalSeconds}s");

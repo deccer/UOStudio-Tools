@@ -1,6 +1,6 @@
 ﻿namespace TexturePacker
 {
-    public class Tile
+    internal class Tile
     {
         public int Id;
         public Orientation Orientation;
