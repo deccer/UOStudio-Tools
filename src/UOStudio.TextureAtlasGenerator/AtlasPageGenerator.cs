@@ -11,6 +11,7 @@ namespace UOStudio.TextureAtlasGenerator
         private readonly IUvwCalculatorStrategy _uvwCalculatorStrategy;
         private readonly ITileContainer _tileContainer;
         private readonly int _atlasPageSize;
+        private bool _drawGrid;
 
         public AtlasPageGenerator(
             ILogger logger,
@@ -25,6 +26,7 @@ namespace UOStudio.TextureAtlasGenerator
             _atlasPageSize = int.TryParse(configuration["AtlasPageSize"], out var atlasPageSize)
                 ? atlasPageSize
                 : 2048;
+            _drawGrid = bool.TryParse(configuration["DrawGrid"], out var drawGrid) && drawGrid;
         }
 
         public IReadOnlyCollection<Bitmap> GeneratePages(IReadOnlyList<TextureAsset> textureAssets)
@@ -59,10 +61,8 @@ namespace UOStudio.TextureAtlasGenerator
                     currentPixelPositionY,
                     atlasPageNumber);
 
-                // add tile info
                 _tileContainer.AddTile(CreateTile(textureAsset, tileUvw));
 
-                // add check if processed already
                 if (!alreadyProcessed.Contains(textureAsset.ArtHash))
                 {
                     if (currentPixelPositionX == 0)
@@ -74,12 +74,15 @@ namespace UOStudio.TextureAtlasGenerator
                         textureAsset.Bitmap,
                         currentPixelPositionX,
                         currentPixelPositionY);
-                    atlasPageGraphics.DrawRectangle(
-                        Pens.Fuchsia,
-                        currentPixelPositionX,
-                        currentPixelPositionY,
-                        textureAssetWidth,
-                        textureAssetHeight);
+                    if (_drawGrid)
+                    {
+                        atlasPageGraphics.DrawRectangle(
+                            Pens.Fuchsia,
+                            currentPixelPositionX,
+                            currentPixelPositionY,
+                            textureAssetWidth,
+                            textureAssetHeight);
+                    }
 
                     currentPixelPositionX += textureAssetWidth;
                     if (currentPixelPositionX + textureAssetWidth > _atlasPageSize)
