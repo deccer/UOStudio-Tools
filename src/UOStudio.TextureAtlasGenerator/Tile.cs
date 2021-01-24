@@ -4,7 +4,7 @@
     {
         protected Tile(int id, Uvws uvws)
         {
-            Id = Id;
+            Id = id;
             Uvws = uvws;
         }
 
