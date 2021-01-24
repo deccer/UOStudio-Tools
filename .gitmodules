@@ -1,0 +1,6 @@
+[submodule "src/external/FNA"]
+	path = src/external/FNA
+	url = https://github.com/FNA-XNA/FNA
+[submodule "src/external/fnalibs"]
+	path = src/external/fnalibs
+	url = https://github.com/deccer/FNA-libs
