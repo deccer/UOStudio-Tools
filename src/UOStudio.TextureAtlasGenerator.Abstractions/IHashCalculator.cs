@@ -1,4 +1,4 @@
-﻿namespace UOStudio.TextureAtlasGenerator
+﻿namespace UOStudio.TextureAtlasGenerator.Abstractions
 {
     public interface IHashCalculator
     {

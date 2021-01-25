@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using UOStudio.TextureAtlasGenerator.Contracts;
 
-namespace UOStudio.TextureAtlasGenerator
+namespace UOStudio.TextureAtlasGenerator.Abstractions
 {
-    internal interface IAssetSorter
+    public interface IAssetSorter
     {
         IReadOnlyCollection<TextureAsset> SortAssets(IReadOnlyCollection<TextureAsset> textureAssets);
     }

@@ -1,4 +1,6 @@
-﻿namespace UOStudio.TextureAtlasGenerator
+﻿using UOStudio.TextureAtlasGenerator.Contracts;
+
+namespace UOStudio.TextureAtlasGenerator.Abstractions
 {
     public interface IUvwCalculatorStrategy
     {

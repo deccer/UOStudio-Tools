@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace UOStudio.TextureAtlasGenerator
+namespace UOStudio.TextureAtlasGenerator.Abstractions
 {
     public interface ITexture3dGenerator : IDisposable
     {
