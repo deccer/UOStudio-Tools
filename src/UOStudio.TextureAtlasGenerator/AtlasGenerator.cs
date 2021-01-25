@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using UOStudio.TextureAtlasGenerator.Abstractions;
+using UOStudio.TextureAtlasGenerator.Contracts;
 
 namespace UOStudio.TextureAtlasGenerator
 {
@@ -53,6 +54,7 @@ namespace UOStudio.TextureAtlasGenerator
             textureAssets = _assetSorter.SortAssets(textureAssets);
 
             var atlasPages = _atlasPageGenerator.GeneratePages(textureAssets.ToList());
+
             if (_storeIndividualPages)
             {
                 var atlasPageNumber = 0;

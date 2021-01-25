@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using Serilog;
 using UOStudio.TextureAtlasGenerator.Abstractions;
@@ -33,7 +34,8 @@ namespace UOStudio.TextureAtlasGenerator
         public void Save(string fileName, int atlasPageCount)
         {
             SetW(atlasPageCount);
-            var json = JsonConvert.SerializeObject(_landTiles, Formatting.Indented);
+            var atlas = GetAtlas(atlasPageCount);
+            var json = JsonConvert.SerializeObject(atlas, Formatting.Indented);
             File.WriteAllText(fileName, json);
         }
 
@@ -43,6 +45,23 @@ namespace UOStudio.TextureAtlasGenerator
             {
                 tile.Uvws.SetW(atlasPageCount);
             }
+            foreach (var item in _itemTiles)
+            {
+                item.Uvws.SetW(atlasPageCount);
+            }
+        }
+
+        private Atlas GetAtlas(int atlasPageCount)
+        {
+            var atlas = new Atlas
+            {
+                Width = 2048,
+                Height = 2048,
+                Depth = atlasPageCount,
+                Items = _itemTiles.ToList(),
+                Lands = _landTiles.ToList()
+            };
+            return atlas;
         }
     }
 }
