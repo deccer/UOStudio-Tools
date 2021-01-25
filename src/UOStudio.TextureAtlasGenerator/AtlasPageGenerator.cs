@@ -104,7 +104,6 @@ namespace UOStudio.TextureAtlasGenerator
                 }
             }
 
-            _tileContainer.SetW(atlasPages.Count);
             return atlasPages;
         }
 
