@@ -15,25 +15,25 @@
                 {
                     U = atlasX + atlasTileWidth * 0.5f,
                     V = atlasY,
-                    W = 1.0f / page
+                    W = page
                 },
                 V2 = new Vertex
                 {
                     U = atlasX + atlasTileWidth,
                     V = atlasY + atlasTileHeight * 0.5f,
-                    W = 1.0f / page
+                    W = page
                 },
                 V3 = new Vertex
                 {
                     U = atlasX,
                     V = atlasY + atlasTileHeight * 0.5f,
-                    W = 1.0f / page
+                    W = page
                 },
                 V4 = new Vertex
                 {
                     U = atlasX + atlasTileWidth * 0.5f,
                     V = atlasY + atlasTileHeight,
-                    W = 1.0f / page
+                    W = page
                 }
             };
             return uvws;

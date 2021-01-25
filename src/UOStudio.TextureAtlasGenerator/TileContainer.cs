@@ -21,13 +21,14 @@ namespace UOStudio.TextureAtlasGenerator
             _tiles.Add(tile);
         }
 
-        public void Save(string fileName)
+        public void Save(string fileName, int atlasPageCount)
         {
+            SetW(atlasPageCount);
             var json = JsonConvert.SerializeObject(_tiles, Formatting.Indented);
             File.WriteAllText(fileName, json);
         }
 
-        public void SetW(int atlasPageCount)
+        private void SetW(int atlasPageCount)
         {
             foreach (var tile in _tiles)
             {
