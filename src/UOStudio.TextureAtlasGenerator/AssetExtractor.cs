@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Serilog;
+using UOStudio.TextureAtlasGenerator.Abstractions;
+using UOStudio.TextureAtlasGenerator.Contracts;
 using UOStudio.TextureAtlasGenerator.Ultima;
 
 namespace UOStudio.TextureAtlasGenerator

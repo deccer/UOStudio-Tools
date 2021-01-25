@@ -2,6 +2,8 @@
 using System.Drawing;
 using Microsoft.Extensions.Configuration;
 using Serilog;
+using UOStudio.TextureAtlasGenerator.Abstractions;
+using UOStudio.TextureAtlasGenerator.Contracts;
 
 namespace UOStudio.TextureAtlasGenerator
 {
@@ -45,7 +47,7 @@ namespace UOStudio.TextureAtlasGenerator
                 {
                     var atlasPage = new Bitmap(_atlasPageSize, _atlasPageSize);
                     atlasPages.Add(atlasPage);
-
+                    atlasPageNumber++;
                     atlasPageGraphics?.Dispose();
                     atlasPageGraphics = Graphics.FromImage(atlasPage);
                 }
@@ -54,14 +56,21 @@ namespace UOStudio.TextureAtlasGenerator
                 var textureAssetWidth = textureAsset.Bitmap.Width;
                 var textureAssetHeight = textureAsset.Bitmap.Height;
 
-                var tileUvw = _uvwCalculatorStrategy.CalculcateUvws(
+                var tileUvws = _uvwCalculatorStrategy.CalculcateUvws(
                     textureAsset,
                     _atlasPageSize,
                     currentPixelPositionX,
                     currentPixelPositionY,
                     atlasPageNumber);
 
-                _tileContainer.AddTile(CreateTile(textureAsset, tileUvw));
+                if (textureAsset.TileType == TileType.Item)
+                {
+                    _tileContainer.AddItemTile(new ItemTile(textureAsset.TileId, tileUvws, textureAsset.Bitmap.Height));
+                }
+                else
+                {
+                    _tileContainer.AddLandTile(new LandTile(textureAsset.TileId, tileUvws));
+                }
 
                 if (!alreadyProcessed.Contains(textureAsset.ArtHash))
                 {
@@ -106,10 +115,5 @@ namespace UOStudio.TextureAtlasGenerator
 
             return atlasPages;
         }
-
-        private Tile CreateTile(TextureAsset textureAsset, Uvws uvws, int height = 0) =>
-            textureAsset.TileType == TileType.Item
-                ? (Tile) new ItemTile(textureAsset.TileId, uvws, height)
-                : new LandTile(textureAsset.TileId, uvws);
     }
 }

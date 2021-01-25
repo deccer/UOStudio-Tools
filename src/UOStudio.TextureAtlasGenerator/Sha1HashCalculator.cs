@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography;
+using UOStudio.TextureAtlasGenerator.Abstractions;
 
 namespace UOStudio.TextureAtlasGenerator
 {

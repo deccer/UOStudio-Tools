@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Serilog;
+using UOStudio.TextureAtlasGenerator.Abstractions;
 using Color = Microsoft.Xna.Framework.Color;
 using Rectangle = System.Drawing.Rectangle;
 
