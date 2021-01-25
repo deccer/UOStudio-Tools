@@ -47,8 +47,20 @@ namespace UOStudio.TextureAtlasGenerator
             var assets = new List<TextureAsset>(16384);
             for (var i = 0; i < tileCount; i++)
             {
-                var artHash = _hashCalculator.CalculateHash(Art.GetRawStatic(i));
-                assets.Add(new TextureAsset(i, tileType, artHash, Art.GetStatic(i, false)));
+                var artRaw = tileType == TileType.Item
+                    ? Art.GetRawStatic(i)
+                    : Art.GetRawLand(i);
+                if (artRaw == null)
+                {
+                    //_logger.Debug("{@TileType} {@TileId} could not be extracted and will be skipped.", tileType, i);
+                    continue;
+                }
+
+                var artHash = _hashCalculator.CalculateHash(artRaw);
+                var art = tileType == TileType.Item
+                    ? Art.GetStatic(i, false)
+                    : Art.GetLand(i);
+                assets.Add(new TextureAsset(i, tileType, artHash, art));
             }
 
             return assets;
