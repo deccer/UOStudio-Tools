@@ -9,6 +9,7 @@ namespace UOStudio.TextureAtlasGenerator
             IReadOnlyCollection<TextureAsset> textureAssets)
         {
             return textureAssets
+                .Where(textureAsset => textureAsset.Bitmap != null)
                 .OrderByDescending(textureAsset => textureAsset.Bitmap.Height)
                 .ThenByDescending(textureAsset => textureAsset.Bitmap.Width * textureAsset.Bitmap.Height)
                 .ToArray();
