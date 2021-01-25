@@ -40,6 +40,7 @@ namespace UOStudio.TextureAtlasGenerator
             services.AddSingleton<IUvwCalculatorStrategy, UvwCalculatorStrategy>();
             services.AddSingleton<IAtlasGenerator, AtlasGenerator>();
             services.AddSingleton<ITileContainer, TileContainer>();
+            services.AddSingleton<ITexture3dGenerator, Texture3dGenerator>();
             return services.BuildServiceProvider();
         }
     }

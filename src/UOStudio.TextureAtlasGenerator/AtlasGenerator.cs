@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 using Serilog;
 
 namespace UOStudio.TextureAtlasGenerator
@@ -12,38 +13,59 @@ namespace UOStudio.TextureAtlasGenerator
         private readonly IAssetSorter _assetSorter;
         private readonly IAtlasPageGenerator _atlasPageGenerator;
         private readonly ITileContainer _tileContainer;
+        private readonly ITexture3dGenerator _texture3dGenerator;
+
+        private readonly string _exportPath;
+        private readonly bool _storeIndividualPages;
 
         public AtlasGenerator(
             ILogger logger,
+            IConfiguration configuration,
             IAssetExtractor assetExtractor,
             IAssetSorter assetSorter,
             IAtlasPageGenerator atlasPageGenerator,
-            ITileContainer tileContainer)
+            ITileContainer tileContainer,
+            ITexture3dGenerator texture3dGenerator)
         {
+            _logger = logger.ForContext<AtlasGenerator>();
             _assetExtractor = assetExtractor;
             _assetSorter = assetSorter;
             _atlasPageGenerator = atlasPageGenerator;
             _tileContainer = tileContainer;
-            _logger = logger.ForContext<AtlasGenerator>();
+            _texture3dGenerator = texture3dGenerator;
+
+            _exportPath = configuration["ExportPath"];
+            _storeIndividualPages =
+                bool.TryParse(configuration["StoreIndividualPages"], out var storeIndividualPages) && storeIndividualPages;
         }
 
         public void Run()
         {
+            if (!Directory.Exists(_exportPath))
+            {
+                Directory.CreateDirectory(_exportPath);
+            }
+
             var textureAssets = _assetExtractor.ExtractAssets();
             _logger.Information("Extracted {@Count} Assets", textureAssets.Count);
 
             textureAssets = _assetSorter.SortAssets(textureAssets);
 
             var atlasPages = _atlasPageGenerator.GeneratePages(textureAssets.ToList());
-            var atlasPageNumber = 0;
-            var guid = Guid.NewGuid().ToString();
-            foreach (var atlasPage in atlasPages)
+            if (_storeIndividualPages)
             {
-                var fileName = Path.Combine(Path.GetTempPath(), $"{guid}-{atlasPageNumber++:00}.png");
-                atlasPage.Save(fileName);
+                var atlasPageNumber = 0;
+                var guid = Guid.NewGuid().ToString();
+                foreach (var atlasPage in atlasPages)
+                {
+                    var fileName = Path.Combine(_exportPath, $"{guid}-{atlasPageNumber++:00}.png");
+                    atlasPage.Save(fileName);
+                }
             }
 
-            _tileContainer.Save(Path.Combine(Path.GetTempPath(), "Atlas.xx.json"));
+            var texture3dData = _texture3dGenerator.Generate3dTexture(atlasPages);
+            File.WriteAllBytes(Path.Combine(_exportPath, "Atlas.blob"), texture3dData);
+            _tileContainer.Save(Path.Combine(_exportPath, "Atlas.json"), atlasPages.Count);
         }
     }
 }
