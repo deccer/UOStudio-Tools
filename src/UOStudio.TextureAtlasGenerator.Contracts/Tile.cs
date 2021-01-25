@@ -1,4 +1,4 @@
-﻿namespace UOStudio.TextureAtlasGenerator
+﻿namespace UOStudio.TextureAtlasGenerator.Contracts
 {
     public abstract class Tile
     {
