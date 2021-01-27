@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <AssemblyName>UOStudio.TextureAtlasGenerator.Client</AssemblyName>
+        <RootNamespace>UOStudio.TextureAtlasGenerator.Client</RootNamespace>
+        <Title>UOStudio.TextureAtlasGenerator.Client</Title>
+        <Authors>deccer</Authors>
+        <Copyright>2021</Copyright>
+        <PackageProjectUrl>https://github.com/deccer/UOStudio-Tools</PackageProjectUrl>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <RepositoryUrl>https://github.com/deccer/UOStudio-Tools</RepositoryUrl>
+        <PackageLicenseUrl>https://github.com/deccer/UOStudio-Tools/LICENSE</PackageLicenseUrl>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\external\FNA\FNA.Core.csproj" />
+      <ProjectReference Include="..\UOStudio.TextureAtlasGenerator.Contracts\UOStudio.TextureAtlasGenerator.Contracts.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+      <PackageReference Include="Serilog" Version="2.10.0" />
+    </ItemGroup>
+
+</Project>

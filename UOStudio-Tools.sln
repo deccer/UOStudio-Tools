@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UOStudio.TextureAtlasGenera
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UOStudio.TextureAtlasGenerator.Ultima", "src\UOStudio.TextureAtlasGenerator.Ultima\UOStudio.TextureAtlasGenerator.Ultima.csproj", "{45AED728-D916-4B69-9419-4BD7E37FA62E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UOStudio.TextureAtlasGenerator.Client", "src\UOStudio.TextureAtlasGenerator.Client\UOStudio.TextureAtlasGenerator.Client.csproj", "{F5F522F2-5D1A-4637-BFF7-BE2E79DAB7CE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,7 @@ Global
 		{3635B971-98E6-482D-A5ED-B1197FD61E7D} = {E26D0B81-B2B0-422C-A75B-525D50422B24}
 		{DA507BDD-9469-4B60-AD0B-3B2F77A9AC3B} = {E26D0B81-B2B0-422C-A75B-525D50422B24}
 		{45AED728-D916-4B69-9419-4BD7E37FA62E} = {E26D0B81-B2B0-422C-A75B-525D50422B24}
+		{F5F522F2-5D1A-4637-BFF7-BE2E79DAB7CE} = {E26D0B81-B2B0-422C-A75B-525D50422B24}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0B4A22E7-9BF6-4863-91AA-E138C22976AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -132,5 +135,17 @@ Global
 		{45AED728-D916-4B69-9419-4BD7E37FA62E}.Release|x64.Build.0 = Release|Any CPU
 		{45AED728-D916-4B69-9419-4BD7E37FA62E}.Release|x86.ActiveCfg = Release|Any CPU
 		{45AED728-D916-4B69-9419-4BD7E37FA62E}.Release|x86.Build.0 = Release|Any CPU
+		{F5F522F2-5D1A-4637-BFF7-BE2E79DAB7CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5F522F2-5D1A-4637-BFF7-BE2E79DAB7CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5F522F2-5D1A-4637-BFF7-BE2E79DAB7CE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F5F522F2-5D1A-4637-BFF7-BE2E79DAB7CE}.Debug|x64.Build.0 = Debug|Any CPU
+		{F5F522F2-5D1A-4637-BFF7-BE2E79DAB7CE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F5F522F2-5D1A-4637-BFF7-BE2E79DAB7CE}.Debug|x86.Build.0 = Debug|Any CPU
+		{F5F522F2-5D1A-4637-BFF7-BE2E79DAB7CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5F522F2-5D1A-4637-BFF7-BE2E79DAB7CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5F522F2-5D1A-4637-BFF7-BE2E79DAB7CE}.Release|x64.ActiveCfg = Release|Any CPU
+		{F5F522F2-5D1A-4637-BFF7-BE2E79DAB7CE}.Release|x64.Build.0 = Release|Any CPU
+		{F5F522F2-5D1A-4637-BFF7-BE2E79DAB7CE}.Release|x86.ActiveCfg = Release|Any CPU
+		{F5F522F2-5D1A-4637-BFF7-BE2E79DAB7CE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
