@@ -65,7 +65,7 @@ namespace UOStudio.TextureAtlasGenerator
 
                 if (textureAsset.TileType == TileType.Item)
                 {
-                    _tileContainer.AddItemTile(new ItemTile(textureAsset.TileId, tileUvws, textureAsset.Bitmap.Height));
+                    _tileContainer.AddItemTile(new ItemTile(textureAsset, tileUvws));
                 }
                 else
                 {
