@@ -351,3 +351,6 @@ MigrationBackup/
 
 # Rider
 .idea/
+
+# Nuget config
+nuget.config
