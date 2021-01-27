@@ -2,6 +2,13 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Authors>deccer</Authors>
+        <Copyright>2021</Copyright>
+        <RepositoryUrl>https://github.com/deccer/UOStudio-Tools</RepositoryUrl>
+        <Title>UOStudio.TextureAtlasGenerator.Abstractions</Title>
+        <PackageProjectUrl>https://github.com/deccer/UOStudio-Tools</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/deccer/UOStudio-Tools/LICENSE</PackageLicenseUrl>
     </PropertyGroup>
 
     <ItemGroup>
