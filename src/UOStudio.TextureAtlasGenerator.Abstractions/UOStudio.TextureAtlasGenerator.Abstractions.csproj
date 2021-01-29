@@ -10,6 +10,7 @@
         <PackageProjectUrl>https://github.com/deccer/UOStudio-Tools</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/deccer/UOStudio-Tools/LICENSE</PackageLicenseUrl>
         <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
+        <PackageTags>UOStudio</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
