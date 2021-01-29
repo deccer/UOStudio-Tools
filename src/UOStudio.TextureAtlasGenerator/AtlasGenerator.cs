@@ -4,7 +4,6 @@ using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using UOStudio.TextureAtlasGenerator.Abstractions;
-using UOStudio.TextureAtlasGenerator.Contracts;
 
 namespace UOStudio.TextureAtlasGenerator
 {
@@ -61,8 +60,9 @@ namespace UOStudio.TextureAtlasGenerator
                 var guid = Guid.NewGuid().ToString();
                 foreach (var atlasPage in atlasPages)
                 {
-                    var fileName = Path.Combine(_exportPath, $"{guid}-{atlasPageNumber++:00}.png");
+                    var fileName = Path.Combine(_exportPath, $"{guid}-{atlasPageNumber:00}.png");
                     atlasPage.Save(fileName);
+                    atlasPageNumber += 1;
                 }
             }
 

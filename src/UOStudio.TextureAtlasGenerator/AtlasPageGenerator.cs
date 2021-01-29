@@ -13,7 +13,7 @@ namespace UOStudio.TextureAtlasGenerator
         private readonly IUvwCalculatorStrategy _uvwCalculatorStrategy;
         private readonly ITileContainer _tileContainer;
         private readonly int _atlasPageSize;
-        private bool _drawGrid;
+        private readonly bool _drawGrid;
 
         public AtlasPageGenerator(
             ILogger logger,
@@ -100,10 +100,8 @@ namespace UOStudio.TextureAtlasGenerator
                     currentPixelPositionX += textureAssetWidth;
                     if (currentPixelPositionX + textureAssetWidth > _atlasPageSize)
                     {
-
                         currentPixelPositionX = 0;
                         currentPixelPositionY += textureAssets[firstItemOnTheRow].Bitmap.Height;
-
                     }
                     if (currentPixelPositionY + textureAssets[firstItemOnTheRow].Bitmap.Height >
                         _atlasPageSize)

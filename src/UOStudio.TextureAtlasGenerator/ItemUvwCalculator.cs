@@ -7,10 +7,10 @@ namespace UOStudio.TextureAtlasGenerator
     {
         public Uvws CalculateUvws(TextureAsset textureAsset, int atlasPageSize, int currentX, int currentY, int page)
         {
-            var atlasX = currentX / (float) atlasPageSize;
-            var atlasY = currentY / (float) atlasPageSize;
-            var atlasTileWidth = textureAsset.Bitmap.Width / (float) atlasPageSize;
-            var atlasTileHeight = textureAsset.Bitmap.Height / (float) atlasPageSize;
+            var atlasX = currentX / (float)atlasPageSize;
+            var atlasY = currentY / (float)atlasPageSize;
+            var atlasTileWidth = textureAsset.Bitmap.Width / (float)atlasPageSize;
+            var atlasTileHeight = textureAsset.Bitmap.Height / (float)atlasPageSize;
 
             var uvws = new Uvws
             {

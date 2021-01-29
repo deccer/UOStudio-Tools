@@ -62,7 +62,6 @@ namespace UOStudio.TextureAtlasGenerator
 
                 if (artRaw == null)
                 {
-                    //_logger.Debug("{@TileType} {@TileId} could not be extracted and will be skipped.", tileType, i);
                     continue;
                 }
 
