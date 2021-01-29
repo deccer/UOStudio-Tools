@@ -42,6 +42,7 @@ namespace UOStudio.TextureAtlasGenerator
             services.AddSingleton<IAtlasGenerator, AtlasGenerator>();
             services.AddSingleton<ITileContainer, TileContainer>();
             services.AddSingleton<ITexture3dGenerator, Texture3dGenerator>();
+            services.AddSingleton<IUltimaArtProvider, UltimaArtProvider>();
             return services.BuildServiceProvider();
         }
     }

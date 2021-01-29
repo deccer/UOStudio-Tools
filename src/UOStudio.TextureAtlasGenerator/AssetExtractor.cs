@@ -12,23 +12,26 @@ namespace UOStudio.TextureAtlasGenerator
     {
         private readonly ILogger _logger;
         private readonly IHashCalculator _hashCalculator;
+        private readonly IUltimaArtProvider _ultimaArtProvider;
 
         private readonly string _ultimaOnlinePath;
 
         public AssetExtractor(
             ILogger logger,
             IHashCalculator hashCalculator,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IUltimaArtProvider ultimaArtProvider)
         {
             _logger = logger;
             _hashCalculator = hashCalculator;
+            _ultimaArtProvider = ultimaArtProvider;
 
             _ultimaOnlinePath = configuration["UltimaOnlinePath"];
         }
 
         public IReadOnlyCollection<TextureAsset> ExtractAssets()
         {
-            Files.Initialize(_ultimaOnlinePath);
+            _ultimaArtProvider.InitializeFiles(_ultimaOnlinePath);
 
             var assets = new List<TextureAsset>(0x20000);
             var sw = Stopwatch.StartNew();
@@ -50,8 +53,8 @@ namespace UOStudio.TextureAtlasGenerator
             for (var i = 0; i < tileCount; i++)
             {
                 var artRaw = tileType == TileType.Item
-                    ? Art.GetRawStatic(i)
-                    : Art.GetRawLand(i);
+                    ? _ultimaArtProvider.GetRawStatic(i)
+                    : _ultimaArtProvider.GetRawLand(i);
                 if (artRaw == null)
                 {
                     //_logger.Debug("{@TileType} {@TileId} could not be extracted and will be skipped.", tileType, i);
@@ -60,8 +63,8 @@ namespace UOStudio.TextureAtlasGenerator
 
                 var artHash = _hashCalculator.CalculateHash(artRaw);
                 var art = tileType == TileType.Item
-                    ? Art.GetStatic(i, false)
-                    : Art.GetLand(i);
+                    ? _ultimaArtProvider.GetStatic(i)
+                    : _ultimaArtProvider.GetLand(i);
                 assets.Add(new TextureAsset(i, tileType, artHash, art));
             }
 
