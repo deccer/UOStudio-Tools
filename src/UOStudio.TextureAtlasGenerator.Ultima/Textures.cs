@@ -93,6 +93,29 @@ namespace UOStudio.TextureAtlasGenerator.Ultima
             return GetTexture(index, out var _);
         }
 
+        public static byte[] GetRawTexture(int index)
+        {
+            var stream = _fileIndex.Seek(index, out var length, out var extra, out _);
+            if (stream == null)
+            {
+                return null;
+            }
+
+            if (length == 0)
+            {
+                return null;
+            }
+
+            var size = extra == 0 ? 64 : 128;
+            var max = size * size * 2;
+
+            var streamBuffer = new byte[max];
+
+            stream.Read(streamBuffer, 0, max);
+
+            return streamBuffer;
+        }
+
         /// <summary>
         /// Returns Bitmap of Texture with verdata bool
         /// </summary>
@@ -180,84 +203,75 @@ namespace UOStudio.TextureAtlasGenerator.Ultima
             var memIdx = new MemoryStream();
             var memMul = new MemoryStream();
 
-            using (var binIdx = new BinaryWriter(memIdx))
-            using (var binMul = new BinaryWriter(memMul))
+            using var binIdx = new BinaryWriter(memIdx);
+            using var binMul = new BinaryWriter(memMul);
+
+            for (var index = 0; index < GetIdxLength(); ++index)
             {
-                for (var index = 0; index < GetIdxLength(); ++index)
+                _cache[index] ??= GetTexture(index);
+
+                var bmp = _cache[index];
+                if (bmp == null || _removed[index])
                 {
-                    if (_cache[index] == null)
-                    {
-                        _cache[index] = GetTexture(index);
-                    }
-
-                    var bmp = _cache[index];
-                    if ((bmp == null) || (_removed[index]))
-                    {
-                        binIdx.Write(0); // lookup
-                        binIdx.Write(0); // length
-                        binIdx.Write(0); // extra
-                    }
-                    else
-                    {
-                        byte[] newChecksum;
-                        using (var sha = SHA256.Create())
-                        using (var ms = new MemoryStream())
-                        {
-                            bmp.Save(ms, ImageFormat.Bmp);
-                            newChecksum = sha.ComputeHash(ms.ToArray());
-                        }
-
-                        if (CompareSaveImages(checksumList, newChecksum, out var sum))
-                        {
-                            binIdx.Write(sum.pos); // lookup
-                            binIdx.Write(sum.length); // length
-                            binIdx.Write(sum.extra); // extra
-
-                            continue;
-                        }
-
-                        var bd = bmp.LockBits(
-                            new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly,
-                            PixelFormat.Format16bppArgb1555);
-                        var line = (ushort*)bd.Scan0;
-                        var delta = bd.Stride >> 1;
-
-                        binIdx.Write((int)binMul.BaseStream.Position); // lookup
-                        var length = (int)binMul.BaseStream.Position;
-
-                        for (var y = 0; y < bmp.Height; ++y, line += delta)
-                        {
-                            var cur = line;
-                            for (var x = 0; x < bmp.Width; ++x)
-                            {
-                                binMul.Write((ushort)(cur[x] ^ 0x8000));
-                            }
-                        }
-
-                        var start = length;
-                        length = (int)binMul.BaseStream.Position - length;
-                        binIdx.Write(length);
-                        var extra = GetExtraFlag(length);
-                        binIdx.Write(extra);
-                        bmp.UnlockBits(bd);
-
-                        checksumList.Add(new Checksums
-                        {
-                            pos = start,
-                            length = length,
-                            checksum = newChecksum,
-                            extra = extra
-                        });
-                    }
+                    binIdx.Write(0); // lookup
+                    binIdx.Write(0); // length
+                    binIdx.Write(0); // extra
                 }
-
-                using (var fileIdx = new FileStream(idx, FileMode.Create, FileAccess.Write, FileShare.Write))
-                using (var fileMul = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))
+                else
                 {
-                    memIdx.WriteTo(fileIdx);
-                    memMul.WriteTo(fileMul);
+                    using var sha = SHA256.Create();
+                    using var ms = new MemoryStream();
+                    bmp.Save(ms, ImageFormat.Bmp);
+                    var newChecksum = sha.ComputeHash(ms.ToArray());
+
+                    if (CompareSaveImages(checksumList, newChecksum, out var sum))
+                    {
+                        binIdx.Write(sum.pos);    // lookup
+                        binIdx.Write(sum.length); // length
+                        binIdx.Write(sum.extra);  // extra
+
+                        continue;
+                    }
+
+                    var bd = bmp.LockBits(
+                        new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly,
+                        PixelFormat.Format16bppArgb1555);
+                    var line = (ushort*)bd.Scan0;
+                    var delta = bd.Stride >> 1;
+
+                    binIdx.Write((int)binMul.BaseStream.Position); // lookup
+                    var length = (int)binMul.BaseStream.Position;
+
+                    for (var y = 0; y < bmp.Height; ++y, line += delta)
+                    {
+                        var cur = line;
+                        for (var x = 0; x < bmp.Width; ++x)
+                        {
+                            binMul.Write((ushort)(cur[x] ^ 0x8000));
+                        }
+                    }
+
+                    var start = length;
+                    length = (int)binMul.BaseStream.Position - length;
+                    binIdx.Write(length);
+                    var extra = GetExtraFlag(length);
+                    binIdx.Write(extra);
+                    bmp.UnlockBits(bd);
+
+                    checksumList.Add(new Checksums
+                    {
+                        pos = start,
+                        length = length,
+                        checksum = newChecksum,
+                        extra = extra
+                    });
                 }
             }
+
+            using var fileIdx = new FileStream(idx, FileMode.Create, FileAccess.Write, FileShare.Write);
+            using var fileMul = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write);
+            memIdx.WriteTo(fileIdx);
+            memMul.WriteTo(fileMul);
 
             memIdx.Dispose();
             memIdx.Dispose();
