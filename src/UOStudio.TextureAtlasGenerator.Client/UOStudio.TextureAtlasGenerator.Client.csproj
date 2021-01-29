@@ -11,16 +11,27 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <RepositoryUrl>https://github.com/deccer/UOStudio-Tools</RepositoryUrl>
         <PackageLicenseUrl>https://github.com/deccer/UOStudio-Tools/LICENSE</PackageLicenseUrl>
+        <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\external\FNA\FNA.Core.csproj" />
-      <ProjectReference Include="..\UOStudio.TextureAtlasGenerator.Contracts\UOStudio.TextureAtlasGenerator.Contracts.csproj" />
+        <ProjectReference Include="..\..\external\FNA\FNA.Core.csproj"/>
+        <ProjectReference Include="..\UOStudio.TextureAtlasGenerator.Contracts\UOStudio.TextureAtlasGenerator.Contracts.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-      <PackageReference Include="Serilog" Version="2.10.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.3"/>
+        <PackageReference Include="Serilog" Version="2.10.0"/>
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="..\..\stylecop.json">
+            <InProject>false</InProject>
+        </AdditionalFiles>
     </ItemGroup>
 
 </Project>

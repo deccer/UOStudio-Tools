@@ -9,14 +9,25 @@
         <Authors>deccer</Authors>
         <PackageProjectUrl>https://github.com/deccer/UOStudio-Tools</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/deccer/UOStudio-Tools/LICENSE</PackageLicenseUrl>
+        <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\UOStudio.TextureAtlasGenerator.Contracts\UOStudio.TextureAtlasGenerator.Contracts.csproj" />
+        <ProjectReference Include="..\UOStudio.TextureAtlasGenerator.Contracts\UOStudio.TextureAtlasGenerator.Contracts.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
+        <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="..\..\stylecop.json">
+            <InProject>false</InProject>
+        </AdditionalFiles>
     </ItemGroup>
 
 </Project>
