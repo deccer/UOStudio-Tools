@@ -35,6 +35,9 @@ namespace UOStudio.TextureAtlasGenerator.Client
             _atlasName = atlasName;
             _invalidLandTile = new LandTile(-1, new Uvws());
             _invalidItemTile = new ItemTile(new TextureAsset(), new Uvws());
+
+            _landTiles = new Dictionary<int, LandTile>();
+            _itemTiles = new Dictionary<int, ItemTile>();
         }
 
         public void Dispose()
