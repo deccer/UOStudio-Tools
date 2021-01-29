@@ -20,7 +20,7 @@ namespace UOStudio.TextureAtlasGenerator
             _uvwCalculators = uvwCalculators;
         }
 
-        public Uvws CalculcateUvws(TextureAsset textureAsset, int atlasPageSize, int currentX, int currentY, int page)
+        public Uvws CalculateUvws(TextureAsset textureAsset, int atlasPageSize, int currentX, int currentY, int page)
         {
             var uvwCalculator = _uvwCalculators.FirstOrDefault(c => c.TileType == textureAsset.TileType);
             if (uvwCalculator == null)
@@ -29,7 +29,7 @@ namespace UOStudio.TextureAtlasGenerator
                 throw new InvalidOperationException();
             }
 
-            return uvwCalculator.CalculcateUvws(textureAsset, atlasPageSize, currentX, currentY, page);
+            return uvwCalculator.CalculateUvws(textureAsset, atlasPageSize, currentX, currentY, page);
         }
     }
 }

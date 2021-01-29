@@ -5,7 +5,7 @@ namespace UOStudio.TextureAtlasGenerator
 {
     internal sealed class ItemUvwCalculator : IUvwCalculator
     {
-        public Uvws CalculcateUvws(TextureAsset textureAsset, int atlasPageSize, int currentX, int currentY, int page)
+        public Uvws CalculateUvws(TextureAsset textureAsset, int atlasPageSize, int currentX, int currentY, int page)
         {
             var atlasX = currentX / (float) atlasPageSize;
             var atlasY = currentY / (float) atlasPageSize;

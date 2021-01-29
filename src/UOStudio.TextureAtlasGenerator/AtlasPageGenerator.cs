@@ -56,7 +56,7 @@ namespace UOStudio.TextureAtlasGenerator
                 var textureAssetWidth = textureAsset.Bitmap.Width;
                 var textureAssetHeight = textureAsset.Bitmap.Height;
 
-                var tileUvws = _uvwCalculatorStrategy.CalculcateUvws(
+                var tileUvws = _uvwCalculatorStrategy.CalculateUvws(
                     textureAsset,
                     _atlasPageSize,
                     currentPixelPositionX,
