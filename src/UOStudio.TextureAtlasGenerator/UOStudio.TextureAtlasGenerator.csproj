@@ -19,10 +19,6 @@
         <PackageReference Include="System.CommandLine.Experimental" Version="0.3.0-alpha.19577.1" />
         <PackageReference Include="System.CommandLine.DragonFruit" Version="0.3.0-alpha.20574.7" />
         <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
-        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
