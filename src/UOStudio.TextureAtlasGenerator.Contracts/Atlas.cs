@@ -10,8 +10,10 @@ namespace UOStudio.TextureAtlasGenerator.Contracts
 
         public int Depth;
 
-        public List<ItemTile> Items;
+        public IList<ItemTile> Items;
 
-        public List<LandTile> Lands;
+        public IList<LandTile> Lands;
+
+        public IList<LandTile> LandTextures;
     }
 }

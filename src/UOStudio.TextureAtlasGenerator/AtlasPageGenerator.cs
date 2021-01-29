@@ -67,9 +67,13 @@ namespace UOStudio.TextureAtlasGenerator
                 {
                     _tileContainer.AddItemTile(new ItemTile(textureAsset, tileUvws));
                 }
-                else
+                else if (textureAsset.TileType == TileType.Land)
                 {
                     _tileContainer.AddLandTile(new LandTile(textureAsset.TileId, tileUvws));
+                }
+                else
+                {
+                    _tileContainer.AddLandTextureTile(new LandTile(textureAsset.TileId, tileUvws));
                 }
 
                 if (!alreadyProcessed.Contains(textureAsset.ArtHash))

@@ -6,6 +6,8 @@ namespace UOStudio.TextureAtlasGenerator.Abstractions
     {
         void AddLandTile(LandTile tile);
 
+        void AddLandTextureTile(LandTile landTile);
+
         void AddItemTile(ItemTile tile);
 
         void Save(string fileName, int atlasPageCount);

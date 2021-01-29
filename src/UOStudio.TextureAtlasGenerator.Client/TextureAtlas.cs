@@ -21,6 +21,7 @@ namespace UOStudio.TextureAtlasGenerator.Client
         private readonly string _atlasName;
 
         private IDictionary<int, LandTile> _landTiles;
+        private IDictionary<int, LandTile> _landTextureTiles;
         private IDictionary<int, ItemTile> _itemTiles;
         private int _depth;
 
@@ -37,6 +38,7 @@ namespace UOStudio.TextureAtlasGenerator.Client
             _invalidItemTile = new ItemTile(new TextureAsset(), new Uvws());
 
             _landTiles = new Dictionary<int, LandTile>();
+            _landTextureTiles = new Dictionary<int, LandTile>();
             _itemTiles = new Dictionary<int, ItemTile>();
         }
 
@@ -47,6 +49,11 @@ namespace UOStudio.TextureAtlasGenerator.Client
 
         public LandTile GetLandTile(int landId)
             => _landTiles.TryGetValue(landId, out var landTile)
+                ? landTile
+                : _invalidLandTile;
+
+        public LandTile GetLandTextureTile(int landId)
+            => _landTextureTiles.TryGetValue(landId, out var landTile)
                 ? landTile
                 : _invalidLandTile;
 
@@ -78,6 +85,10 @@ namespace UOStudio.TextureAtlasGenerator.Client
             _logger.Debug("Loading Atlas Data...");
 
             _landTiles = atlasData.Lands.ToDictionary(landTileData => landTileData.Id, landTileData => landTileData);
+            _landTextureTiles = atlasData.LandTextures.ToDictionary(
+                landTextureTileData => landTextureTileData.Id,
+                landTextureTileData => landTextureTileData
+            );
             _itemTiles = atlasData.Items.ToDictionary(staticTileData => staticTileData.Id, staticTileData => staticTileData);
 
             sw.Stop();

@@ -12,18 +12,25 @@ namespace UOStudio.TextureAtlasGenerator
     {
         private readonly ILogger _logger;
         private readonly IList<LandTile> _landTiles;
+        private readonly IList<LandTile> _landTextureTiles;
         private readonly IList<ItemTile> _itemTiles;
 
         public TileContainer(ILogger logger)
         {
             _logger = logger.ForContext<TileContainer>();
             _landTiles = new List<LandTile>(0x8000);
+            _landTextureTiles = new List<LandTile>(0x8000);
             _itemTiles = new List<ItemTile>(0x8000);
         }
 
         public void AddLandTile(LandTile tile)
         {
             _landTiles.Add(tile);
+        }
+
+        public void AddLandTextureTile(LandTile tile)
+        {
+            _landTextureTiles.Add(tile);
         }
 
         public void AddItemTile(ItemTile tile)
@@ -41,9 +48,13 @@ namespace UOStudio.TextureAtlasGenerator
 
         private void SetW(int atlasPageCount)
         {
-            foreach (var tile in _landTiles)
+            foreach (var landTile in _landTiles)
             {
-                tile.Uvws.SetW(atlasPageCount);
+                landTile.Uvws.SetW(atlasPageCount);
+            }
+            foreach (var landTextureTile in _landTextureTiles)
+            {
+                landTextureTile.Uvws.SetW(atlasPageCount);
             }
             foreach (var item in _itemTiles)
             {
@@ -59,7 +70,8 @@ namespace UOStudio.TextureAtlasGenerator
                 Height = 2048,
                 Depth = atlasPageCount,
                 Items = _itemTiles.ToList(),
-                Lands = _landTiles.ToList()
+                Lands = _landTiles.ToList(),
+                LandTextures = _landTextureTiles.ToList()
             };
             return atlas;
         }

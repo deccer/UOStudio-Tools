@@ -37,6 +37,7 @@ namespace UOStudio.TextureAtlasGenerator
             var sw = Stopwatch.StartNew();
 
             assets.AddRange(ExtractArt(0x4000, TileType.Land));
+            assets.AddRange(ExtractArt(0x4000, TileType.LandTexture));
             assets.AddRange(ExtractArt(Art.GetMaxItemID(), TileType.Item));
 
             sw.Stop();
@@ -52,9 +53,13 @@ namespace UOStudio.TextureAtlasGenerator
             var assets = new List<TextureAsset>(16384);
             for (var i = 0; i < tileCount; i++)
             {
-                var artRaw = tileType == TileType.Item
-                    ? _ultimaArtProvider.GetRawStatic(i)
-                    : _ultimaArtProvider.GetRawLand(i);
+                var artRaw = tileType switch
+                {
+                    TileType.Item => _ultimaArtProvider.GetRawStatic(i),
+                    TileType.Land => _ultimaArtProvider.GetRawLand(i),
+                    _             => _ultimaArtProvider.GetRawTexture(i)
+                };
+
                 if (artRaw == null)
                 {
                     //_logger.Debug("{@TileType} {@TileId} could not be extracted and will be skipped.", tileType, i);
@@ -62,9 +67,14 @@ namespace UOStudio.TextureAtlasGenerator
                 }
 
                 var artHash = _hashCalculator.CalculateHash(artRaw);
-                var art = tileType == TileType.Item
-                    ? _ultimaArtProvider.GetStatic(i)
-                    : _ultimaArtProvider.GetLand(i);
+
+                var art = tileType switch
+                {
+                    TileType.Item => _ultimaArtProvider.GetStatic(i),
+                    TileType.Land => _ultimaArtProvider.GetLand(i),
+                    _             => _ultimaArtProvider.GetTexture(i)
+                };
+
                 assets.Add(new TextureAsset(i, tileType, artHash, art));
             }
 
