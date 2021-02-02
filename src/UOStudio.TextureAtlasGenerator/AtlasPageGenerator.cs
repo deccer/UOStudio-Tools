@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using UOStudio.TextureAtlasGenerator.Abstractions;
@@ -41,6 +42,7 @@ namespace UOStudio.TextureAtlasGenerator
 
             Graphics atlasPageGraphics = null;
             var firstItemOnTheRow = -1;
+            var drawCountPerPage = new Dictionary<int, int>();
             for (var i = 0; i < textureAssets.Count; ++i)
             {
                 if (currentPixelPositionX == 0 && currentPixelPositionY == 0)
@@ -50,6 +52,7 @@ namespace UOStudio.TextureAtlasGenerator
                     atlasPageNumber++;
                     atlasPageGraphics?.Dispose();
                     atlasPageGraphics = Graphics.FromImage(atlasPage);
+                    drawCountPerPage.Add(atlasPageNumber, 0);
                 }
 
                 var textureAsset = textureAssets[i];
@@ -83,6 +86,7 @@ namespace UOStudio.TextureAtlasGenerator
                         firstItemOnTheRow = i;
                     }
 
+                    drawCountPerPage[atlasPageNumber]++;
                     atlasPageGraphics!.DrawImageUnscaled(
                         textureAsset.Bitmap,
                         currentPixelPositionX,
@@ -112,6 +116,14 @@ namespace UOStudio.TextureAtlasGenerator
                     }
 
                     alreadyProcessed.Add(textureAsset.ArtHash);
+                }
+            }
+
+            foreach (var (pageNumber, drawCount) in drawCountPerPage.Reverse())
+            {
+                if (drawCount == 0)
+                {
+                    atlasPages.RemoveAt(pageNumber - 1);
                 }
             }
 
