@@ -16,14 +16,14 @@ namespace UOStudio.TextureAtlasGenerator
             {
                 V1 = new Vertex
                 {
-                    U = atlasX + atlasTileWidth,
+                    U = atlasX,
                     V = atlasY,
                     W = page
                 },
                 V2 = new Vertex
                 {
                     U = atlasX + atlasTileWidth,
-                    V = atlasY + atlasTileHeight,
+                    V = atlasY,
                     W = page
                 },
                 V3 = new Vertex
@@ -34,8 +34,8 @@ namespace UOStudio.TextureAtlasGenerator
                 },
                 V4 = new Vertex
                 {
-                    U = atlasX,
-                    V = atlasY,
+                    U = atlasX + atlasTileWidth,
+                    V = atlasY + atlasTileHeight,
                     W = page
                 }
             };
