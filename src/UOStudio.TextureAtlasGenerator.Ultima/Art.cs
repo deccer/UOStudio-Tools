@@ -597,8 +597,8 @@ namespace UOStudio.TextureAtlasGenerator.Ultima
                             var checksum = bmp.ToArray(PixelFormat.Format16bppArgb1555).ToSha256();
                             if (CompareSaveImagesLand(checksum, out var sum))
                             {
-                                binidx.Write(sum.pos); // lookup
-                                binidx.Write(sum.length);
+                                binidx.Write(sum.Position); // lookup
+                                binidx.Write(sum.Length);
                                 binidx.Write(0);
 
                                 continue;
@@ -645,15 +645,15 @@ namespace UOStudio.TextureAtlasGenerator.Ultima
                             binidx.Write(0);
                             bmp.UnlockBits(bd);
 
-                            _checksumsLand.Add(new CheckSums { pos = start, length = length, checksum = checksum });
+                            _checksumsLand.Add(new CheckSums { Position = start, Length = length, Checksum = checksum });
                         }
                         else
                         {
                             var checksum = bmp.ToArray(PixelFormat.Format16bppArgb1555).ToSha256();
                             if (CompareSaveImagesStatic(checksum, out var sum))
                             {
-                                binidx.Write(sum.pos); // lookup
-                                binidx.Write(sum.length);
+                                binidx.Write(sum.Position); // lookup
+                                binidx.Write(sum.Length);
                                 binidx.Write(0);
 
                                 continue;
@@ -737,7 +737,7 @@ namespace UOStudio.TextureAtlasGenerator.Ultima
                             binidx.Write(0);
                             bmp.UnlockBits(bd);
 
-                            _checksumsStatic.Add(new CheckSums {pos = start, length = length, checksum = checksum});
+                            _checksumsStatic.Add(new CheckSums {Position = start, Length = length, Checksum = checksum});
                         }
                     }
 
@@ -752,7 +752,7 @@ namespace UOStudio.TextureAtlasGenerator.Ultima
             sum = new CheckSums();
             for (var i = 0; i < _checksumsLand.Count; ++i)
             {
-                var cmp = _checksumsLand[i].checksum;
+                var cmp = _checksumsLand[i].Checksum;
                 if (cmp == null || newChecksum == null || cmp.Length != newChecksum.Count)
                 {
                     return false;
@@ -789,7 +789,7 @@ namespace UOStudio.TextureAtlasGenerator.Ultima
             sum = new CheckSums();
             for (var i = 0; i < _checksumsStatic.Count; ++i)
             {
-                var cmp = _checksumsStatic[i].checksum;
+                var cmp = _checksumsStatic[i].Checksum;
                 if (cmp == null || newChecksum == null || cmp.Length != newChecksum.Length)
                 {
                     return false;
