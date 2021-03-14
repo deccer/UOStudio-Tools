@@ -12,7 +12,7 @@
         <RepositoryUrl>https://github.com/deccer/UOStudio-Tools</RepositoryUrl>
         <PackageLicenseUrl>https://github.com/deccer/UOStudio-Tools/LICENSE</PackageLicenseUrl>
         <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
-        <PackageVersion>1.1.0</PackageVersion>
+        <PackageVersion>1.2.0</PackageVersion>
         <PackageTags>UOStudio</PackageTags>
         <PackageReleaseNotes>Added new TileType</PackageReleaseNotes>
     </PropertyGroup>
