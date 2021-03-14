@@ -20,10 +20,9 @@ namespace UOStudio.TextureAtlasGenerator.Ultima
 
         private struct CheckSums
         {
-            public byte[] checksum;
-            public int pos;
-            public int length;
-            // public int index;
+            public byte[] Checksum;
+            public int Position;
+            public int Length;
         }
 
         private static List<CheckSums> _checksumsLand;
