@@ -69,6 +69,7 @@ namespace UOStudio.TextureAtlasGenerator
             var texture3dData = _texture3dGenerator.Generate3dTexture(atlasPages);
             File.WriteAllBytes(Path.Combine(_exportPath, "Atlas.blob"), texture3dData);
             _tileContainer.Save(Path.Combine(_exportPath, "Atlas.json"), atlasPages.Count);
+            _logger.Information("Done");
         }
     }
 }
