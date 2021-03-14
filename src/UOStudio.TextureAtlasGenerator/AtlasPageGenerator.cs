@@ -71,6 +71,16 @@ namespace UOStudio.TextureAtlasGenerator
 
                 if (!alreadyProcessed.Contains(textureAsset.ArtHash))
                 {
+                    if (currentPixelPositionX == 0 && currentPixelPositionY == 0)
+                    {
+                        drawCountPerPage.Add(atlasPageNumber, 0);
+                        var atlasPage = new Bitmap(_atlasPageSize, _atlasPageSize);
+                        atlasPages.Add(atlasPage);
+                        atlasPageNumber++;
+                        atlasPageGraphics?.Dispose();
+                        atlasPageGraphics = Graphics.FromImage(atlasPage);
+                    }
+
                     if (currentPixelPositionX == 0)
                     {
                         firstItemOnTheRow = i;
