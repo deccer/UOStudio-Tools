@@ -45,16 +45,6 @@ namespace UOStudio.TextureAtlasGenerator
             var drawCountPerPage = new Dictionary<int, int>();
             for (var i = 0; i < textureAssets.Count; ++i)
             {
-                if (currentPixelPositionX == 0 && currentPixelPositionY == 0)
-                {
-                    var atlasPage = new Bitmap(_atlasPageSize, _atlasPageSize);
-                    atlasPages.Add(atlasPage);
-                    atlasPageNumber++;
-                    atlasPageGraphics?.Dispose();
-                    atlasPageGraphics = Graphics.FromImage(atlasPage);
-                    drawCountPerPage.Add(atlasPageNumber, 0);
-                }
-
                 var textureAsset = textureAssets[i];
                 var textureAssetWidth = textureAsset.Bitmap.Width;
                 var textureAssetHeight = textureAsset.Bitmap.Height;
@@ -86,7 +76,6 @@ namespace UOStudio.TextureAtlasGenerator
                         firstItemOnTheRow = i;
                     }
 
-                    drawCountPerPage[atlasPageNumber]++;
                     atlasPageGraphics!.DrawImageUnscaled(
                         textureAsset.Bitmap,
                         currentPixelPositionX,
@@ -116,14 +105,6 @@ namespace UOStudio.TextureAtlasGenerator
                     }
 
                     alreadyProcessed.Add(textureAsset.ArtHash);
-                }
-            }
-
-            foreach (var (pageNumber, drawCount) in drawCountPerPage.Reverse())
-            {
-                if (drawCount == 0)
-                {
-                    atlasPages.RemoveAt(pageNumber - 1);
                 }
             }
 
