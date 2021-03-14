@@ -9,7 +9,8 @@ namespace UOStudio.TextureAtlasGenerator.Ultima
     public static class Art
     {
         private static FileIndex _fileIndex = new FileIndex(
-        "Artidx.mul", "Art.mul", "artLegacyMUL.uop", 0x14000, 4, ".tga", 0x13FDC, false);
+            "Artidx.mul", "Art.mul", "artLegacyMUL.uop", 0x14000, 4, ".tga", 0x13FDC, false);
+
         private static Bitmap[] _cache;
         private static bool[] _removed;
         private static readonly Dictionary<int, bool> _patched = new Dictionary<int, bool>();
