@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Newtonsoft.Json;
 using Serilog;
 using UOStudio.TextureAtlasGenerator.Abstractions;
@@ -10,13 +11,17 @@ namespace UOStudio.TextureAtlasGenerator
 {
     internal sealed class TileContainer : ITileContainer
     {
+        private readonly IHashCalculator _hashCalculator;
         private readonly ILogger _logger;
         private readonly IList<LandTile> _landTiles;
         private readonly IList<LandTile> _landTextureTiles;
         private readonly IList<ItemTile> _itemTiles;
 
-        public TileContainer(ILogger logger)
+        public TileContainer(
+            ILogger logger,
+            IHashCalculator hashCalculator)
         {
+            _hashCalculator = hashCalculator;
             _logger = logger.ForContext<TileContainer>();
             _landTiles = new List<LandTile>(0x8000);
             _landTextureTiles = new List<LandTile>(0x8000);
@@ -44,6 +49,9 @@ namespace UOStudio.TextureAtlasGenerator
             var atlas = GetAtlas(atlasPageCount);
             var json = JsonConvert.SerializeObject(atlas, Formatting.Indented);
             File.WriteAllText(fileName, json);
+
+            var atlasHash = _hashCalculator.CalculateHash(Encoding.UTF8.GetBytes(json));
+            File.WriteAllText(Path.ChangeExtension(fileName, ".hash"), atlasHash);
         }
 
         private void SetW(int atlasPageCount)
