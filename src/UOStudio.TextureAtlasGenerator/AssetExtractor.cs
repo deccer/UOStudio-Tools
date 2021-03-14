@@ -41,7 +41,7 @@ namespace UOStudio.TextureAtlasGenerator
             assets.AddRange(ExtractArt(Art.GetMaxItemID(), TileType.Item));
 
             sw.Stop();
-            _logger.Information("Extracting Art from {@UltimaOnlinePath}. Took {@TotalSeconds}s.",
+            _logger.Information("Extracting Art from {@UltimaOnlinePath}. Took {@TotalSeconds}s",
                 _ultimaOnlinePath, sw.Elapsed.TotalSeconds);
 
             return assets;
@@ -57,7 +57,7 @@ namespace UOStudio.TextureAtlasGenerator
                 {
                     TileType.Item => _ultimaArtProvider.GetRawStatic(i),
                     TileType.Land => _ultimaArtProvider.GetRawLand(i),
-                    _             => _ultimaArtProvider.GetRawTexture(i)
+                    _ => _ultimaArtProvider.GetRawTexture(i)
                 };
 
                 if (artRaw == null)
