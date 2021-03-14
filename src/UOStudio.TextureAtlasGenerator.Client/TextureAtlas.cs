@@ -34,8 +34,8 @@ namespace UOStudio.TextureAtlasGenerator.Client
             _logger = logger.ForContext<TextureAtlas>();
             _graphicsDevice = graphicsDevice;
             _atlasName = atlasName;
-            _invalidLandTile = new LandTile(-1, new Uvws());
-            _invalidItemTile = new ItemTile(new TextureAsset(), new Uvws());
+            _invalidLandTile = new LandTile(-1, default);
+            _invalidItemTile = new ItemTile(default, default);
 
             _landTiles = new Dictionary<int, LandTile>();
             _landTextureTiles = new Dictionary<int, LandTile>();
@@ -79,7 +79,7 @@ namespace UOStudio.TextureAtlasGenerator.Client
                 SurfaceFormat.Color);
             AtlasTexture.SetData(atlasTextureData);
             sw.Stop();
-            _logger.Debug($"Loading Atlas Texture...Done. Took {sw.Elapsed.TotalSeconds}s.");
+            _logger.Debug("Loading Atlas Texture...Done, Took {@Elapsed}s", sw.Elapsed.TotalSeconds);
 
             sw.Restart();
             _logger.Debug("Loading Atlas Data...");
@@ -92,7 +92,7 @@ namespace UOStudio.TextureAtlasGenerator.Client
             _itemTiles = atlasData.Items.ToDictionary(staticTileData => staticTileData.Id, staticTileData => staticTileData);
 
             sw.Stop();
-            _logger.Debug($"Loading Atlas Data...Done. Took {sw.Elapsed.TotalSeconds}s.");
+            _logger.Debug("Loading Atlas Data...Done. Took {@Elapsed}s", sw.Elapsed.TotalSeconds);
         }
     }
 }
